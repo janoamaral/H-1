@@ -10,7 +10,7 @@ services:
       env_file: ./envs/backend.env
       container_name: h1-backend
       ports:
-        - "${LOCAL_PORT_BACKEND_REST}:9000"
+        - "${LOCAL_PORT_BACKEND_REST}:3000"
         - "${LOCAL_PORT_BACKEND_GRPC}:5000"
         - "${LOCAL_PORT_BACKEND_DEBUGGER}:9229"
       volumes:
@@ -25,7 +25,7 @@ services:
       env_file: ./envs/frontend.env
       container_name: h1-frontend
       ports:
-        - "${LOCAL_PORT_FRONTEND}:3000"
+        - "${LOCAL_PORT_FRONTEND}:5173"
       volumes:
         - "${FRONTEND_CODE_PATH}/:/app"
       networks:
