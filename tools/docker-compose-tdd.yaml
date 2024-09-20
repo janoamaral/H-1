@@ -1,0 +1,16 @@
+version: '3.8'
+networks:
+  h1-net:
+
+services:
+    backend-tdd:
+      build:
+        context: "${BACKEND_CODE_PATH}/"
+        dockerfile: Dockerfile
+      env_file: ./envs/backend.env
+      container_name: h1-backend-tdd
+      command: npm run test:tdd
+      volumes:
+        - "${BACKEND_CODE_PATH}/src:/app/src"
+      networks:
+        h1-net:

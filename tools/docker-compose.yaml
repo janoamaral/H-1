@@ -1,0 +1,32 @@
+version: '3.8'
+networks:
+  h1-net:
+
+services:
+    backend:
+      build:
+        context: "${BACKEND_CODE_PATH}/"
+        dockerfile: Dockerfile
+      env_file: ./envs/backend.env
+      container_name: h1-backend
+      ports:
+        - "${LOCAL_PORT_BACKEND_REST}:9000"
+        - "${LOCAL_PORT_BACKEND_GRPC}:5000"
+        - "${LOCAL_PORT_BACKEND_DEBUGGER}:9229"
+      volumes:
+        - "${BACKEND_CODE_PATH}:/app"
+      networks:
+        h1-net:
+
+    frontend:
+      build:
+        context: "${FRONTEND_CODE_PATH}/"
+        dockerfile: Dockerfile
+      env_file: ./envs/frontend.env
+      container_name: h1-frontend
+      ports:
+        - "${LOCAL_PORT_FRONTEND}:3000"
+      volumes:
+        - "${FRONTEND_CODE_PATH}/:/app"
+      networks:
+        h1-net:
