@@ -23,7 +23,7 @@ let AppService = class AppService {
         for await (const textPart of textStream) {
             res.write(textPart);
         }
-        res.sendStatus(200);
+        return res.status(200).end();
     }
 };
 exports.AppService = AppService;
