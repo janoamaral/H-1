@@ -1,16 +1,33 @@
-<script setup lang="ts">;
+<script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+import { Suspense, ref, onMounted } from 'vue'
 import HelloWorld from './components/HelloWorld.vue'
-</script>
 
+const data = ref('')
+const loading = ref(false)
+
+onMounted(async () => {
+  loading.value = true
+  const res = await fetch('http://localhost:9000/')
+  if (!res.ok) {
+    data.value = 'Failed to fetch data'
+  } else {
+    const decoder = new TextDecoder('utf-8')
+    for await (const chunk of res.body.values()) {
+      data.value += decoder.decode(chunk)
+    }
+  }
+  loading.value = false
+})
+</script>
 
 <template>
   <header>
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
     <div class="wrapper">
-      <HelloWorld msg="Test test did it!" />
-
+      <HelloWorld msg="You did it!" />
+      <p id="h1" v-bind:class="{ thinking: loading }">{{ data }}</p>
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
@@ -25,6 +42,14 @@ import HelloWorld from './components/HelloWorld.vue'
 header {
   line-height: 1.5;
   max-height: 100vh;
+}
+
+#h1 {
+  margin-top: 2em;
+}
+
+.thinking {
+  font-style: italic !important;
 }
 
 .logo {
