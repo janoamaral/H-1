@@ -9,7 +9,6 @@ export class AppService {
         .CompletionTextGenerator({
           model: 'mistral',
           temperature: 0.7,
-          maxGenerationTokens: 120,
         })
         .withTextPrompt(),
       prompt:
@@ -19,5 +18,7 @@ export class AppService {
     for await (const textPart of textStream) {
       res.write(textPart);
     }
+
+    res.sendStatus(200);
   }
 }

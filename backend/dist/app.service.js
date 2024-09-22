@@ -16,7 +16,6 @@ let AppService = class AppService {
                 .CompletionTextGenerator({
                 model: 'mistral',
                 temperature: 0.7,
-                maxGenerationTokens: 120,
             })
                 .withTextPrompt(),
             prompt: "Generate a text based on the following prompt: 'Hello brave new world'.",
@@ -24,6 +23,7 @@ let AppService = class AppService {
         for await (const textPart of textStream) {
             res.write(textPart);
         }
+        res.sendStatus(200);
     }
 };
 exports.AppService = AppService;
