@@ -15,8 +15,7 @@ services:
         - "${LOCAL_PORT_BACKEND_DEBUGGER}:9229"
       volumes:
         - "${BACKEND_CODE_PATH}:/app"
-      networks:
-        h1-net:
+      network_mode: host
 
     frontend:
       build:
@@ -28,5 +27,4 @@ services:
         - "${LOCAL_PORT_FRONTEND}:5173"
       volumes:
         - "${FRONTEND_CODE_PATH}/:/app"
-      networks:
-        h1-net:
+      network_mode: host

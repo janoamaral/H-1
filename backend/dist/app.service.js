@@ -8,9 +8,22 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppService = void 0;
 const common_1 = require("@nestjs/common");
+const modelfusion_1 = require("modelfusion");
 let AppService = class AppService {
-    getHello() {
-        return 'Hello World!';
+    async getHello(res) {
+        const textStream = await (0, modelfusion_1.streamText)({
+            model: modelfusion_1.ollama
+                .CompletionTextGenerator({
+                model: 'mistral',
+                temperature: 0.7,
+                maxGenerationTokens: 120,
+            })
+                .withTextPrompt(),
+            prompt: "Generate a text based on the following prompt: 'Hello brave new world'.",
+        });
+        for await (const textPart of textStream) {
+            res.write(textPart);
+        }
     }
 };
 exports.AppService = AppService;
