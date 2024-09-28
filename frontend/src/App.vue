@@ -6,19 +6,28 @@ import HelloWorld from './components/HelloWorld.vue'
 const data = ref('')
 const loading = ref(false)
 
-onMounted(async () => {
-  loading.value = true
-  const res = await fetch('http://localhost:9000/')
-  if (!res.ok) {
-    data.value = 'Failed to fetch data'
-  } else {
-    const decoder = new TextDecoder('utf-8')
-    for await (const chunk of res.body.values()) {
-      data.value += decoder.decode(chunk)
-    }
-  }
-  loading.value = false
-})
+let sse = new EventSource('http://localhost:9000/sse')
+
+sse.onmessage = (event) => {
+  data.value = event.data
+}
+
+// onMounted(async () => {
+//   loading.value = true
+//   const res = await fetch('http://localhost:9000/')
+//   if (!res.ok) {
+//     data.value = 'Failed to fetch data'
+//   } else {
+//     const decoder = new TextDecoder('utf-8')
+//     for await (const chunk of res.body.values()) {
+//       data.value += decoder.decode(chunk)
+//     }
+//   }
+// 
+//   setTimeout(() => {
+//     loading.value = false
+//   }, 2400)
+// })
 </script>
 
 <template>
@@ -48,8 +57,16 @@ header {
   margin-top: 2em;
 }
 
-.thinking {
-  font-style: italic !important;
+.thinking::after {
+  content: ' ⬤';
+  color: #40d1a4;
+  animation: blink 0.8s steps(2, start) infinite;
+}
+
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
 }
 
 .logo {

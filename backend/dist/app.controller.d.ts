@@ -3,4 +3,5 @@ export declare class AppController {
     private readonly appService;
     constructor(appService: AppService);
     getHello(res: Response): Promise<void>;
+    sendData(res: any): Promise<void>;
 }

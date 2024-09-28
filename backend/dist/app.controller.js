@@ -22,6 +22,9 @@ let AppController = class AppController {
     async getHello(res) {
         await this.appService.getHello(res);
     }
+    async sendData(res) {
+        res.write('data: This is a message\n\n');
+    }
 };
 exports.AppController = AppController;
 __decorate([
@@ -33,6 +36,14 @@ __decorate([
     __metadata("design:paramtypes", [Response]),
     __metadata("design:returntype", Promise)
 ], AppController.prototype, "getHello", null);
+__decorate([
+    (0, common_1.Get)('/sse'),
+    (0, common_1.Header)('Content-Type', 'text/event-stream'),
+    __param(0, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AppController.prototype, "sendData", null);
 exports.AppController = AppController = __decorate([
     (0, common_1.Controller)(),
     __metadata("design:paramtypes", [app_service_1.AppService])
