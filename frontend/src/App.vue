@@ -32,24 +32,30 @@ sse.onerror = (event) => {
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+    <div class="main">
       <p id="h1" v-bind:class="{ thinking: loading }">{{ data }}</p>
     </div>
   </header>
 </template>
 
 <style scoped>
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 70vw;
+}
 #h1 {
   margin-top: 2em;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.2em;
 }
 
 .thinking::after {
-  content: ' ⬤';
+  content: '█';
   color: #40d1a4;
-  animation: blink 0.8s steps(2, start) infinite;
+  animation: blink 0.6s steps(2, start) infinite;
 }
 
 @keyframes blink {

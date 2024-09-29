@@ -19,23 +19,26 @@ let AppController = class AppController {
     constructor(appService) {
         this.appService = appService;
     }
-    async getHello(res) {
-        await this.appService.getHello(res);
+    getAiRequest(req) {
+        if (this.re) {
+            let { data } = req.body;
+            console.log(data);
+            this.appService.getHello(this.re, data);
+        }
     }
     sendData(res) {
-        this.appService.getHello(res);
+        this.re = res;
     }
 };
 exports.AppController = AppController;
 __decorate([
-    (0, common_1.Get)(),
-    (0, common_1.Header)('Transfer-Encoding', 'chunked'),
-    (0, common_1.Header)('X-Content-Type-Options', 'nosniff'),
-    __param(0, (0, common_1.Res)()),
+    (0, common_1.Post)(),
+    (0, common_1.Header)('Content-Type', 'text/event-stream'),
+    __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], AppController.prototype, "getHello", null);
+    __metadata("design:returntype", void 0)
+], AppController.prototype, "getAiRequest", null);
 __decorate([
     (0, common_1.Get)('/sse'),
     (0, common_1.Header)('Content-Type', 'text/event-stream'),

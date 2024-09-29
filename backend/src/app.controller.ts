@@ -1,21 +1,26 @@
-import { Controller, Get, Header, Res } from '@nestjs/common';
+import { Controller, Get, Post, Header, Res, Req } from '@nestjs/common';
 import { AppService } from './app.service';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) { }
 
-  @Get()
-  @Header('Transfer-Encoding', 'chunked')
-  @Header('X-Content-Type-Options', 'nosniff')
-  async getHello(@Res() res: Response) {
-    await this.appService.getHello(res);
+  re: Response;
+
+  @Post()
+  @Header('Content-Type', 'text/event-stream')
+  getAiRequest(@Req() req: Request) {
+    if (this.re) {
+      let { data } = req.body;
+      console.log(data);
+      this.appService.getHello(this.re, data);
+    }
   }
 
   @Get('/sse')
   @Header('Content-Type', 'text/event-stream')
   sendData(@Res() res: Response) {
-    this.appService.getHello(res);
+    this.re = res;
   }
 }
