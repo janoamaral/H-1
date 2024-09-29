@@ -22,8 +22,8 @@ let AppController = class AppController {
     async getHello(res) {
         await this.appService.getHello(res);
     }
-    async sendData(res) {
-        res.write('data: This is a message\n\n');
+    sendData(res) {
+        this.appService.getHello(res);
     }
 };
 exports.AppController = AppController;
@@ -33,7 +33,7 @@ __decorate([
     (0, common_1.Header)('X-Content-Type-Options', 'nosniff'),
     __param(0, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Response]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AppController.prototype, "getHello", null);
 __decorate([
@@ -42,7 +42,7 @@ __decorate([
     __param(0, (0, common_1.Res)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
+    __metadata("design:returntype", void 0)
 ], AppController.prototype, "sendData", null);
 exports.AppController = AppController = __decorate([
     (0, common_1.Controller)(),

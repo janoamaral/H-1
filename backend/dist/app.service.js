@@ -11,6 +11,7 @@ const common_1 = require("@nestjs/common");
 const modelfusion_1 = require("modelfusion");
 let AppService = class AppService {
     async getHello(res) {
+        res.setHeader('Content-Type', 'text/event-stream');
         const textStream = await (0, modelfusion_1.streamText)({
             model: modelfusion_1.ollama
                 .CompletionTextGenerator({
@@ -20,10 +21,13 @@ let AppService = class AppService {
                 .withTextPrompt(),
             prompt: "Generate a text based on the following prompt: 'Hello brave new world'.",
         });
+        res.write('data: {{start}}\n\n');
         for await (const textPart of textStream) {
-            res.write(textPart);
+            res.write('data: ' + textPart + '\n\n', () => {
+                console.count('Sent text part');
+            });
         }
-        return res.status(200).end();
+        res.write('data: {{end}}\n\n');
     }
 };
 exports.AppService = AppService;

@@ -1,3 +1,4 @@
+import { Response } from 'express';
 export declare class AppService {
-    getHello(res: any): Promise<any>;
+    getHello(res: Response): Promise<void>;
 }

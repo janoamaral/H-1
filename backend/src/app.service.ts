@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { streamText, ollama } from 'modelfusion';
+import { Response } from 'express';
 
 @Injectable()
 export class AppService {
-  async getHello(res: any) {
+  async getHello(res: Response) {
+    res.setHeader('Content-Type', 'text/event-stream');
     const textStream = await streamText({
       model: ollama
         .CompletionTextGenerator({
@@ -15,10 +17,12 @@ export class AppService {
         "Generate a text based on the following prompt: 'Hello brave new world'.",
     });
 
+    res.write('data: {{start}}\n\n');
     for await (const textPart of textStream) {
-      res.write(textPart);
+      res.write('data: ' + textPart + '\n\n', () => {
+        console.count('Sent text part');
+      });
     }
-
-    return res.status(200).end();
+    res.write('data: {{end}}\n\n');
   }
 }

@@ -1,5 +1,6 @@
 import { Controller, Get, Header, Res } from '@nestjs/common';
 import { AppService } from './app.service';
+import { Response } from 'express';
 
 @Controller()
 export class AppController {
@@ -14,7 +15,7 @@ export class AppController {
 
   @Get('/sse')
   @Header('Content-Type', 'text/event-stream')
-  async sendData(@Res() res: any) {
-    res.write('data: This is a message\n\n');
+  sendData(@Res() res: Response) {
+    this.appService.getHello(res);
   }
 }
